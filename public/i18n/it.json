@@ -1,0 +1,27 @@
+{
+  "NAVIGATION_BAR": {
+    "ALBUMS": "Albums",
+    "NAME": "Angular App",
+    "SELECT_LANGUAGE": "Cambia lingua",
+    "USERS": "Utenti"
+  },
+  "TEXT_FILTER": {
+    "PLACEHOLDER": "Inserisci testo"
+  },
+  "ALBUMS": {
+    "CLOSE": "Chiudi",
+    "ERROR_ACCESS_DATA": "Errore accesso ai dati",
+    "LOAD_COMPLETED": "Caricamento completato",
+    "LOADING": "Caricamento...",
+    "NO_RESULT": "Vuoto",
+    "RETRY": "Riprova"
+  },
+  "USERS": {
+    "CLOSE": "Chiudi",
+    "ERROR_ACCESS_DATA": "Errore accesso ai dati",
+    "LOAD_COMPLETED": "Caricamento completato",
+    "LOADING": "Caricamento...",
+    "NO_RESULT": "Vuoto",
+    "RETRY": "Riprova"
+  }
+}
