@@ -3,7 +3,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const jsonServer = require('json-server');
 const app = jsonServer.create();
 const router = require('./lowdb').getRouter();
-const middlewares = jsonServer.defaults(isProduction ? {static: './dist/angular-app/browser'} : {});
+const middlewares = jsonServer.defaults(isProduction ? {static: './dist/ng-bootstrap/browser'} : {});
 
 const delayMiddleware = require('./middlewares/delay');
 const errosMiddleware = require('./middlewares/errors');
@@ -29,7 +29,7 @@ app.use(isProduction ? '/api' : '/', router);
 // Fallback on frontend routes
 app.get('*', (req, res, next) => {
   // load index.html (frontend will handle page changes)
-  isProduction ? res.sendFile(path.join(__dirname, '../dist/angular-app/browser/index.html')) : next();
+  isProduction ? res.sendFile(path.join(__dirname, '../dist/ng-bootstrap/browser/index.html')) : next();
 });
 
 // Start listening
