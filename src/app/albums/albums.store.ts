@@ -75,10 +75,10 @@ export class AlbumsStore implements OnDestroy {
   }
 
   updateParams(params: { textSearch: string | undefined, pageNumber: number }): void {
-    patchState(this.albumState, state => ({ params: { ...params }, users: [] }));
+    patchState(this.albumState, state => ({ params: { ...params } }));
   }
 
   retry(): void {
-    patchState(this.albumState, state => ({ params: { ...state.params }, albums: [] }));
+    patchState(this.albumState, state => ({ params: { ...state.params } }));
   }
 }
