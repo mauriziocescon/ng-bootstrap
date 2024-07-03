@@ -1,14 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
-
-import { EMPTY, Subscription } from 'rxjs';
-import {
-  catchError,
-  debounceTime,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, untracked } from '@angular/core';
 
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
@@ -20,7 +10,7 @@ import { UIUtilitiesService } from '../shared/ui-utilities.service';
 import { AlbumComponent } from './album/album.component';
 
 import { AlbumsService } from './albums.service';
-import { Album } from './album.model';
+import { AlbumsStore } from './albums.store';
 
 @Component({
   selector: 'app-albums',
@@ -35,11 +25,12 @@ import { Album } from './album.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     AlbumsService,
+    AlbumsStore,
   ],
   template: `
     <div class="container-fluid albums-component"
          infiniteScroll
-         [infiniteScrollDisabled]="isInfiniteScrollDisabled()"
+         [infiniteScrollDisabled]="albumsStore.isInfiniteScrollDisabled()"
          (scrolled)="onScroll()">
 
       <div class="row">
@@ -49,18 +40,17 @@ import { Album } from './album.model';
       </div>
 
       <div class="row">
-        @for (album of this.albums(); track album.id) {
+        @for (album of this.albumsStore.albums(); track album.id) {
           <div class="col-12 col-sm-6 album">
             <app-album [album]="album"/>
           </div>
         }
       </div>
 
-      <div class="full-width-message" [hidden]="!isLoading()">{{ "ALBUMS.LOADING" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!hasNoData()">{{ "ALBUMS.NO_RESULT" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!isLoadCompleted()">{{ "ALBUMS.LOAD_COMPLETED" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!shouldRetry()" (click)="retry()"> {{ "ALBUMS.RETRY" | transloco }}
-      </div>
+      <div class="full-width-message" [hidden]="!albumsStore.isLoading()">{{ "ALBUMS.LOADING" | transloco }}</div>
+      <div class="full-width-message" [hidden]="!albumsStore.hasNoData()">{{ "ALBUMS.NO_RESULT" | transloco }}</div>
+      <div class="full-width-message" [hidden]="!albumsStore.isLoadCompleted()">{{ "ALBUMS.LOAD_COMPLETED" | transloco }}</div>
+      <div class="full-width-message" [hidden]="!albumsStore.shouldRetry()" (click)="retry()"> {{ "ALBUMS.RETRY" | transloco }}</div>
       <app-scroll-to-top/>
     </div>`,
   styles: `
@@ -74,87 +64,46 @@ import { Album } from './album.model';
     }
   `,
 })
-export class AlbumsComponent implements OnInit, OnDestroy {
+export class AlbumsComponent implements OnInit {
   private transloco = inject(TranslocoService);
   private uiUtilities = inject(UIUtilitiesService);
-  private albumsService = inject(AlbumsService);
+  albumsStore = inject(AlbumsStore);
 
-  params = signal<{ textSearch: string | undefined, pageNumber: number }>({ textSearch: undefined, pageNumber: 1 });
-  albums = signal<Album[]>([]);
-  isLoading = signal<boolean>(false);
-  error = signal<string | undefined>(undefined);
-  loadCompleted = signal<boolean>(false);
-  isLoadCompleted = computed<boolean>(() => this.isLoading() === false && this.albums()?.length > 0 && this.loadCompleted() === true);
-  hasNoData = computed(() => this.albums()?.length === 0 && this.isLoading() === false && this.error() === undefined);
-  shouldRetry = computed(() => this.isLoading() === false && this.error() !== undefined);
-
-  isInfiniteScrollDisabled = computed(() => this.isLoading() === true || this.error() !== undefined || this.loadCompleted() === true);
-
-  private params$ = toObservable(this.params);
-  private paramsSubscription: Subscription | undefined;
+  private errorWatcher = effect(() => {
+    this.albumsStore.error();
+    untracked(() => {
+      if (this.albumsStore.error()) {
+        this.uiUtilities.modalAlert(
+          this.transloco.translate('ALBUMS.ERROR_ACCESS_DATA'),
+          this.albumsStore.error() as string,
+          this.transloco.translate('ALBUMS.CLOSE'),
+        );
+      }
+    });
+  });
 
   ngOnInit(): void {
-    this.params.set({ textSearch: undefined, pageNumber: 1 });
-    this.albums.set([]);
-    this.isLoading.set(false);
-    this.error.set(undefined);
-    this.loadCompleted.set(false);
-    this.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll();
+    this.albumsStore.setup();
   }
 
   textSearchDidChange(textSearch: string): void {
-    this.params.set({ textSearch, pageNumber: 1 });
-    this.albums.set([]);
+    this.albumsStore.updateParams({ textSearch, pageNumber: 1 });
   }
 
   onScroll(): void {
-    if (!this.loadCompleted() && !this.isLoading()) {
-      if (this.error()) {
-        this.params.update(v => ({ ...v }));
+    if (!this.albumsStore.isLoadCompleted() && !this.albumsStore.isLoading()) {
+      if (this.albumsStore.error()) {
+        this.albumsStore.updateParams({ ...this.albumsStore.params() });
       } else {
-        this.params.update(v => ({ ...v, pageNumber: v.pageNumber + 1 }));
+        this.albumsStore.updateParams({
+          ...this.albumsStore.params(),
+          pageNumber: this.albumsStore.params().pageNumber + 1,
+        });
       }
     }
   }
 
-  loadData(): void {
-    this.paramsSubscription?.unsubscribe();
-
-    this.paramsSubscription = this.params$
-      .pipe(
-        startWith({ ...this.params() }),
-        tap(() => this.isLoading.set(true)),
-        tap(() => this.error.set(undefined)),
-        debounceTime(50),
-        switchMap(({ textSearch, pageNumber }) => this.albumsService.getAlbums(textSearch, pageNumber)
-          .pipe(catchError(err => {
-              this.isLoading.set(false);
-              this.error.set(err);
-              this.uiUtilities.modalAlert(
-                this.transloco.translate('ALBUMS.ERROR_ACCESS_DATA'),
-                err,
-                this.transloco.translate('ALBUMS.CLOSE'),
-              );
-              return EMPTY;
-            }),
-          )),
-        tap(() => this.isLoading.set(false)),
-      )
-      .subscribe(data => {
-        this.albums.update(a => [...a, ...(data.albums)]);
-        this.loadCompleted.set(data.lastPage);
-      });
-  }
-
   retry(): void {
-    this.loadData();
-  }
-
-  unsubscribeAll(): void {
-    this.paramsSubscription?.unsubscribe();
+    this.albumsStore.retry();
   }
 }

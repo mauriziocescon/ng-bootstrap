@@ -1,12 +1,7 @@
 import { computed, inject, Injectable, OnDestroy } from '@angular/core';
 
 import { pipe } from 'rxjs';
-import {
-  debounceTime,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { debounceTime, startWith, switchMap, tap } from 'rxjs/operators';
 import { patchState, signalState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
