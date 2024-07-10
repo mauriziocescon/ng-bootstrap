@@ -54,8 +54,8 @@
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.0.6",
-    "@angular/cli": "^18.0.6",
+    "@angular-devkit/build-angular": "^18.1.0",
+    "@angular/cli": "^18.1.0",
     "@angular/compiler-cli": "^18.1.0",
     "@types/jasmine": "~5.1.0",
     "@types/lodash": "^4.17.1",
@@ -69,6 +69,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "nodemon": "^3.0.2",
-    "typescript": "~5.4.2"
+    "typescript": "~5.5.3"
   }
 }
