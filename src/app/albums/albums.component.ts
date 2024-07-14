@@ -40,7 +40,7 @@ import { AlbumsStore } from './albums.store';
       </div>
 
       <div class="row">
-        @for (album of this.albumsStore.albums(); track album.id) {
+        @for (album of albumsStore.albums(); track album.id) {
           <div class="col-12 col-sm-6 album">
             <app-album [album]="album"/>
           </div>
