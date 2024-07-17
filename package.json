@@ -48,7 +48,7 @@
     "bootstrap-icons": "^1.11.3",
     "lodash": "^4.17.21",
     "ngx-infinite-scroll": "^18.0.0",
-    "ngxtension": "^3.4.0",
+    "ngxtension": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
