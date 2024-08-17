@@ -18,9 +18,8 @@ import { NavigationBarComponent } from './shared/navigation-bar.component';
     </div>`,
   styles: `
     .main-view {
-      padding-top: 4.25rem;
-    }
-  `,
+      padding-top: var(--main-view-pt);
+    }`,
 })
 export class AppComponent {
 }
