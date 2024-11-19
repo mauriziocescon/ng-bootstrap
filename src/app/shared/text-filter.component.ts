@@ -1,12 +1,6 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { distinctUntilChanged, Subscription } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
@@ -15,7 +9,6 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-text-filter',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     TranslocoPipe,
@@ -28,9 +21,9 @@ import { TranslocoPipe } from '@jsverse/transloco';
              placeholder="{{ 'TEXT_FILTER.PLACEHOLDER' | transloco }}"
              [formControl]="searchControl">
       <span class="input-group-text addon" (click)="resetTextFilter()">
-          <span class="bi bi-search" [hidden]="isTextFilterNotEmpty()"></span>
-          <span class="bi bi-x" [hidden]="!isTextFilterNotEmpty()"></span>
-        </span>
+        <span class="bi bi-search" [hidden]="isTextFilterNotEmpty()"></span>
+        <span class="bi bi-x" [hidden]="!isTextFilterNotEmpty()"></span>
+      </span>
     </div>`,
   styles: `
     .addon {

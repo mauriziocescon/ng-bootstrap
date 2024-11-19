@@ -3,7 +3,6 @@ import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-scroll-to-top',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="bi bi-arrow-up-circle go-up"></div>`,

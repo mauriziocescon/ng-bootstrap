@@ -9,7 +9,6 @@ import { AppLanguageService } from '../core/app-language.service';
 
 @Component({
   selector: 'app-navigation-bar',
-  standalone: true,
   imports: [
     TranslocoPipe,
     NgbCollapseModule,

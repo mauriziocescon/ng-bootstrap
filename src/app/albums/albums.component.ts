@@ -14,7 +14,6 @@ import { AlbumsStore } from './albums.store';
 
 @Component({
   selector: 'app-albums',
-  standalone: true,
   imports: [
     TranslocoPipe,
     InfiniteScrollDirective,
@@ -47,11 +46,17 @@ import { AlbumsStore } from './albums.store';
         }
       </div>
 
-      <div class="full-width-message" [hidden]="!albumsStore.isLoading()">{{ "ALBUMS.LOADING" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!albumsStore.hasNoData()">{{ "ALBUMS.NO_RESULT" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!albumsStore.isLoadCompleted()">{{ "ALBUMS.LOAD_COMPLETED" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!albumsStore.shouldRetry()" (click)="retry()"> {{ "ALBUMS.RETRY" | transloco }}</div>
+      @if (albumsStore.isLoading()) {
+        <div class="full-width-message">{{ "ALBUMS.LOADING" | transloco }}</div>
+      } @else if (albumsStore.hasNoData()) {
+        <div class="full-width-message">{{ "ALBUMS.NO_RESULT" | transloco }}</div>
+      } @else if (albumsStore.isLoadCompleted()) {
+        <div class="full-width-message">{{ "ALBUMS.LOAD_COMPLETED" | transloco }}</div>
+      } @else if (albumsStore.shouldRetry()) {
+        <div class="full-width-message" (click)="retry()"> {{ "ALBUMS.RETRY" | transloco }}</div>
+      }
       <app-scroll-to-top/>
+      
     </div>`,
   styles: `
     .albums-component {
@@ -61,8 +66,7 @@ import { AlbumsStore } from './albums.store';
         padding-top: 10px;
         padding-bottom: 10px;
       }
-    }
-  `,
+    }`,
 })
 export class AlbumsComponent implements OnInit {
   private transloco = inject(TranslocoService);

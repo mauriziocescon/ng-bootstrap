@@ -5,7 +5,6 @@ import { NavigationBarComponent } from './shared/navigation-bar.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterOutlet,
     NavigationBarComponent,

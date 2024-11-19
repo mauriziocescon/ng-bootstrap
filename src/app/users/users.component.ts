@@ -13,7 +13,6 @@ import { UsersStore } from './users.store';
 
 @Component({
   selector: 'app-users',
-  standalone: true,
   imports: [
     TranslocoPipe,
     ScrollToTopComponent,
@@ -42,11 +41,17 @@ import { UsersStore } from './users.store';
         }
       </div>
 
-      <div class="full-width-message" [hidden]="!usersStore.loading()">{{ "USERS.LOADING" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!usersStore.hasNoData()">{{ "USERS.NO_RESULT" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!usersStore.isLoadCompleted()">{{ "USERS.LOAD_COMPLETED" | transloco }}</div>
-      <div class="full-width-message" [hidden]="!usersStore.shouldRetry()" (click)="retry()"> {{ "USERS.RETRY" | transloco }}</div>
+      @if (usersStore.loading()) {
+        <div class="full-width-message">{{ "USERS.LOADING" | transloco }}</div>
+      } @else if (usersStore.hasNoData()) {
+        <div class="full-width-message">{{ "USERS.NO_RESULT" | transloco }}</div>
+      } @else if (usersStore.isLoadCompleted()) {
+        <div class="full-width-message">{{ "USERS.LOAD_COMPLETED" | transloco }}</div>
+      } @else if (usersStore.shouldRetry()) {
+        <div class="full-width-message" (click)="retry()"> {{ "USERS.RETRY" | transloco }}</div>
+      }
       <app-scroll-to-top/>
+      
     </div>`,
   styles: `
     .users-component {
@@ -56,8 +61,7 @@ import { UsersStore } from './users.store';
         padding-top: 10px;
         padding-bottom: 10px;
       }
-    }
-  `,
+    }`,
 })
 export class UsersComponent implements OnInit {
   private transloco = inject(TranslocoService);

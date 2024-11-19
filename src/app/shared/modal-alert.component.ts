@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal-alert',
-  standalone: true,
   imports: [
     NgbModalModule,
   ],
@@ -23,7 +22,7 @@ import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalAlertComponent {
   private activeModal = inject(NgbActiveModal);
-  
+
   title = signal<string | undefined>(undefined);
   message = signal<string | undefined>(undefined);
   buttonLabel = signal<string | undefined>(undefined);

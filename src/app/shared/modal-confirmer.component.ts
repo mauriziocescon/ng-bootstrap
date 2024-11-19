@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal-confirmer',
-  standalone: true,
   imports: [
     NgbModalModule,
   ],
@@ -24,7 +23,7 @@ import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalConfirmerComponent {
   private activeModal = inject(NgbActiveModal);
-  
+
   title = signal<string | undefined>(undefined);
   message = signal<string | undefined>(undefined);
   yesButtonLabel = signal<string | undefined>(undefined);
