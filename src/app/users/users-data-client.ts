@@ -4,14 +4,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { AppConstantsService } from '../core/app-constants.service';
+import { AppConstants } from '../core/app-constants';
 
-import { User } from './user.model';
+import { User } from './user';
 
 @Injectable()
-export class UsersService {
+export class UsersDataClient {
   private http = inject(HttpClient);
-  private appConstants = inject(AppConstantsService);
+  private appConstants = inject(AppConstants);
 
   getUsers(textFilter: string | undefined): Observable<{ users: User[] }> {
     const url = this.appConstants.Api.users;

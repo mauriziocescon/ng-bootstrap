@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AppConstantsService } from '../core/app-constants.service';
-import { AppLanguageService } from '../core/app-language.service';
+import { AppConstants } from '../core/app-constants';
+import { AppLanguage } from '../core/app-language';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -53,10 +53,10 @@ import { AppLanguageService } from '../core/app-language.service';
       </div>
     </nav>`,
 })
-export class NavigationBarComponent implements OnInit {
+export class NavigationBar implements OnInit {
   private router = inject(Router);
-  private appConstants = inject(AppConstantsService);
-  private appLanguage = inject(AppLanguageService);
+  private appConstants = inject(AppConstants);
+  private appLanguage = inject(AppLanguage);
 
   languages = signal<string[]>([]);
   selectedLanguageId = signal<string | undefined>(undefined);

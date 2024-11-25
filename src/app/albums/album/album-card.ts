@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { Album } from '../album.model';
+import { Album } from '../album';
 
 @Component({
   selector: 'app-album',
@@ -13,7 +13,7 @@ import { Album } from '../album.model';
       </div>
     </div>`,
 })
-export class AlbumComponent {
+export class AlbumCard {
   album = input.required<Album>();
   title = computed(() => this.album().id);
   subtitle = computed(() => this.album().title);

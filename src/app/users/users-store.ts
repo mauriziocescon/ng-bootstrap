@@ -6,9 +6,9 @@ import { patchState, signalState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 
-import { User } from './user.model';
+import { User } from './user';
 
-import { UsersService } from './users.service';
+import { UsersDataClient } from './users-data-client';
 
 type UserState = {
   params: { textSearch: string | undefined };
@@ -19,7 +19,7 @@ type UserState = {
 
 @Injectable()
 export class UsersStore implements OnDestroy {
-  private usersService = inject(UsersService);
+  private usersDataClient = inject(UsersDataClient);
 
   private userState = signalState<UserState>({
     params: { textSearch: '' },
@@ -40,7 +40,7 @@ export class UsersStore implements OnDestroy {
       startWith({ ...this.userState.params() }),
       tap(() => patchState(this.userState, state => ({ loading: true, error: undefined }))),
       debounceTime(50),
-      switchMap(({ textSearch }) => this.usersService.getUsers(textSearch)
+      switchMap(({ textSearch }) => this.usersDataClient.getUsers(textSearch)
         .pipe(
           tapResponse({
             next: data => patchState(this.userState, state => ({ users: data.users })),

@@ -1,18 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ModalAlertComponent } from './modal-alert.component';
-import { ModalConfirmerComponent } from './modal-confirmer.component';
+import { ModalAlert } from './modal-alert';
+import { ModalConfirmer } from './modal-confirmer';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UIUtilitiesService {
-  private modalService = inject(NgbModal);
+export class ModalManager {
+  private ngbModal = inject(NgbModal);
 
   modalAlert(title: string, message: string, buttonLabel: string): void {
-    const modalRef = this.modalService.open(ModalAlertComponent);
+    const modalRef = this.ngbModal.open(ModalAlert);
     modalRef.componentInstance.title.set(title);
     modalRef.componentInstance.message.set(message);
     modalRef.componentInstance.buttonLabel.set(buttonLabel);
@@ -23,7 +23,7 @@ export class UIUtilitiesService {
   }
 
   modalConfirmer(title: string, message: string, yesButtonLabel: string, noButtonLabel: string, callback: (result: boolean) => void): void {
-    const modalRef = this.modalService.open(ModalConfirmerComponent);
+    const modalRef = this.ngbModal.open(ModalConfirmer);
     modalRef.componentInstance.title.set(title);
     modalRef.componentInstance.message.set(message);
     modalRef.componentInstance.yesButtonLabel.set(yesButtonLabel);

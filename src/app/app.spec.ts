@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { TranslocoTestingModule } from '@jsverse/transloco';
 
-import { NavigationBarComponent } from './shared/navigation-bar.component';
+import { NavigationBar } from './shared/navigation-bar';
 
-import { AppComponent } from './app.component';
+import { App } from './app';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -18,15 +18,15 @@ describe('AppComponent', () => {
           },
           preloadLangs: true,
         }),
-        NavigationBarComponent,
-        AppComponent,
+        NavigationBar,
+        App,
       ],
     })
       .compileComponents();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });

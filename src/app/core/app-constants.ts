@@ -33,18 +33,11 @@ export class LocalStorageKey {
 @Injectable({
   providedIn: 'root',
 })
-export class AppConstantsService {
-  private api: Api;
-  private application: Application;
-  private languages: Languages;
-  private localStorageKey: LocalStorageKey;
-
-  constructor() {
-    this.api = new Api();
-    this.application = new Application();
-    this.languages = new Languages();
-    this.localStorageKey = new LocalStorageKey();
-  }
+export class AppConstants {
+  private api: Api = new Api();
+  private application = new Application();
+  private languages = new Languages();
+  private localStorageKey = new LocalStorageKey();
 
   get Api(): Api {
     return this.api;

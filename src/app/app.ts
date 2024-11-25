@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { NavigationBarComponent } from './shared/navigation-bar.component';
+import { NavigationBar } from './shared/navigation-bar';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    NavigationBarComponent,
+    NavigationBar,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -20,5 +20,5 @@ import { NavigationBarComponent } from './shared/navigation-bar.component';
       padding-top: var(--main-view-pt);
     }`,
 })
-export class AppComponent {
+export class App {
 }

@@ -31,7 +31,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
     }
   `,
 })
-export class TextFilterComponent implements OnInit, OnDestroy {
+export class TextFilter implements OnInit, OnDestroy {
   valueDidChange = output<string>();
 
   searchControl = new FormControl<string>('');

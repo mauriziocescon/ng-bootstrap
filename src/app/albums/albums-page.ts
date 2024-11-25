@@ -3,34 +3,34 @@ import { ChangeDetectionStrategy, Component, effect, inject, OnInit, untracked }
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
-import { ScrollToTopComponent } from '../shared/scroll-to-top.component';
-import { TextFilterComponent } from '../shared/text-filter.component';
-import { UIUtilitiesService } from '../shared/ui-utilities.service';
+import { ScrollToTop } from '../shared/scroll-to-top';
+import { TextFilter } from '../shared/text-filter';
+import { ModalManager } from '../shared/modal-manager';
 
-import { AlbumComponent } from './album/album.component';
+import { AlbumCard } from './album/album-card';
 
-import { AlbumsService } from './albums.service';
-import { AlbumsStore } from './albums.store';
+import { AlbumsDataClient } from './albums-data-client';
+import { AlbumsStore } from './albums-store';
 
 @Component({
   selector: 'app-albums',
   imports: [
     TranslocoPipe,
     InfiniteScrollDirective,
-    ScrollToTopComponent,
-    TextFilterComponent,
-    AlbumComponent,
+    ScrollToTop,
+    TextFilter,
+    AlbumCard,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    AlbumsService,
+    AlbumsDataClient,
     AlbumsStore,
   ],
   template: `
-    <div class="container-fluid albums-component"
+    <div class="container-fluid albums-page"
          infiniteScroll
          [infiniteScrollDisabled]="albumsStore.isInfiniteScrollDisabled()"
-         (scrolled)="onScroll()">
+         (scrolled)="updateParams()">
 
       <div class="row">
         <div class="col-12">
@@ -56,10 +56,10 @@ import { AlbumsStore } from './albums.store';
         <div class="full-width-message" (click)="retry()"> {{ "ALBUMS.RETRY" | transloco }}</div>
       }
       <app-scroll-to-top/>
-      
+
     </div>`,
   styles: `
-    .albums-component {
+    .albums-page {
       padding-top: 10px;
 
       .album {
@@ -68,16 +68,16 @@ import { AlbumsStore } from './albums.store';
       }
     }`,
 })
-export class AlbumsComponent implements OnInit {
+export class AlbumsPage implements OnInit {
   private transloco = inject(TranslocoService);
-  private uiUtilities = inject(UIUtilitiesService);
+  private modalManager = inject(ModalManager);
   albumsStore = inject(AlbumsStore);
 
   private errorWatcher = effect(() => {
     this.albumsStore.error();
     untracked(() => {
       if (this.albumsStore.error()) {
-        this.uiUtilities.modalAlert(
+        this.modalManager.modalAlert(
           this.transloco.translate('ALBUMS.ERROR_ACCESS_DATA'),
           this.albumsStore.error() as string,
           this.transloco.translate('ALBUMS.CLOSE'),
@@ -94,7 +94,7 @@ export class AlbumsComponent implements OnInit {
     this.albumsStore.updateParams({ textSearch, pageNumber: 1 });
   }
 
-  onScroll(): void {
+  updateParams(): void {
     if (!this.albumsStore.isLoadCompleted() && !this.albumsStore.isLoading()) {
       if (this.albumsStore.error()) {
         this.albumsStore.updateParams({ ...this.albumsStore.params() });

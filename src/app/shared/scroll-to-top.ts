@@ -25,7 +25,7 @@ import { DOCUMENT } from '@angular/common';
     '(click)': 'scrollToTop($event)',
   },
 })
-export class ScrollToTopComponent {
+export class ScrollToTop {
   private el = inject(ElementRef);
   private renderer = inject(Renderer2);
   private document = inject(DOCUMENT);

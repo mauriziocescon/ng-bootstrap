@@ -2,30 +2,30 @@ import { ChangeDetectionStrategy, Component, effect, inject, OnInit, untracked }
 
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
-import { ScrollToTopComponent } from '../shared/scroll-to-top.component';
-import { TextFilterComponent } from '../shared/text-filter.component';
-import { UIUtilitiesService } from '../shared/ui-utilities.service';
+import { ScrollToTop } from '../shared/scroll-to-top';
+import { TextFilter } from '../shared/text-filter';
+import { ModalManager } from '../shared/modal-manager';
 
-import { UserComponent } from './user/user.component';
+import { UserCard } from './user/user-card';
 
-import { UsersService } from './users.service';
-import { UsersStore } from './users.store';
+import { UsersDataClient } from './users-data-client';
+import { UsersStore } from './users-store';
 
 @Component({
   selector: 'app-users',
   imports: [
     TranslocoPipe,
-    ScrollToTopComponent,
-    TextFilterComponent,
-    UserComponent,
+    ScrollToTop,
+    TextFilter,
+    UserCard,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    UsersService,
+    UsersDataClient,
     UsersStore,
   ],
   template: `
-    <div class="container-fluid users-component">
+    <div class="container-fluid users-page">
 
       <div class="row">
         <div class="col-12">
@@ -51,10 +51,10 @@ import { UsersStore } from './users.store';
         <div class="full-width-message" (click)="retry()"> {{ "USERS.RETRY" | transloco }}</div>
       }
       <app-scroll-to-top/>
-      
+
     </div>`,
   styles: `
-    .users-component {
+    .users-page {
       padding-top: 10px;
 
       .user {
@@ -63,16 +63,16 @@ import { UsersStore } from './users.store';
       }
     }`,
 })
-export class UsersComponent implements OnInit {
+export class UsersPage implements OnInit {
   private transloco = inject(TranslocoService);
-  private uiUtilities = inject(UIUtilitiesService);
+  private modalManager = inject(ModalManager);
   usersStore = inject(UsersStore);
 
   private errorWatcher = effect(() => {
     this.usersStore.error();
     untracked(() => {
       if (this.usersStore.error()) {
-        this.uiUtilities.modalAlert(
+        this.modalManager.modalAlert(
           this.transloco.translate('USERS.ERROR_ACCESS_DATA'),
           this.usersStore.error() as string,
           this.transloco.translate('USERS.CLOSE'),

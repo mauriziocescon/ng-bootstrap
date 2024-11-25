@@ -6,9 +6,9 @@ import { patchState, signalState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 
-import { Album } from './album.model';
+import { Album } from './album';
 
-import { AlbumsService } from './albums.service';
+import { AlbumsDataClient } from './albums-data-client';
 
 type AlbumState = {
   params: { textSearch: string | undefined, pageNumber: number };
@@ -20,7 +20,7 @@ type AlbumState = {
 
 @Injectable()
 export class AlbumsStore implements OnDestroy {
-  private albumsService = inject(AlbumsService);
+  private albumsDataClient = inject(AlbumsDataClient);
 
   private albumState = signalState<AlbumState>({
     params: { textSearch: undefined, pageNumber: 1 },
@@ -49,7 +49,7 @@ export class AlbumsStore implements OnDestroy {
         error: undefined,
       }))),
       debounceTime(50),
-      switchMap(({ textSearch, pageNumber }) => this.albumsService.getAlbums(textSearch, pageNumber)
+      switchMap(({ textSearch, pageNumber }) => this.albumsDataClient.getAlbums(textSearch, pageNumber)
         .pipe(
           tapResponse({
             next: data => {

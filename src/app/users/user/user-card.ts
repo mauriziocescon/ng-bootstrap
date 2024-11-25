@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { User } from '../user.model';
+import { User } from '../user';
 
 @Component({
   selector: 'app-user',
@@ -14,7 +14,7 @@ import { User } from '../user.model';
       </div>
     </div>`,
 })
-export class UserComponent {
+export class UserCard {
   user = input.required<User>();
   title = computed(() => this.user().id);
   subtitle = computed(() => this.user().username);

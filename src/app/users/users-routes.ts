@@ -1,11 +1,11 @@
 import { Route } from '@angular/router';
 
-import { UsersComponent } from './users.component';
+import { UsersPage } from './users-page';
 
 export default [
   {
     path: '',
-    component: UsersComponent,
+    component: UsersPage,
     title: 'Users',
   },
 ] satisfies Route[];

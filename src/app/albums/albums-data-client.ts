@@ -4,14 +4,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { AppConstantsService } from '../core/app-constants.service';
+import { AppConstants } from '../core/app-constants';
 
-import { Album } from './album.model';
+import { Album } from './album';
 
 @Injectable()
-export class AlbumsService {
+export class AlbumsDataClient {
   private http = inject(HttpClient);
-  private appConstants = inject(AppConstantsService);
+  private appConstants = inject(AppConstants);
 
   getAlbums(textFilter: string | undefined, page: number): Observable<{ albums: Album[], lastPage: boolean }> {
     const url = this.appConstants.Api.albums;

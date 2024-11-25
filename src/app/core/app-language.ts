@@ -6,16 +6,16 @@ import localeIt from '@angular/common/locales/it';
 
 import { TranslocoService } from '@jsverse/transloco';
 
-import { AppConstantsService } from './app-constants.service';
-import { LocalStorageService } from './local-storage.service';
+import { AppConstants } from './app-constants';
+import { LocalStorage } from './local-storage';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AppLanguageService {
+export class AppLanguage {
   private transloco = inject(TranslocoService);
-  private appConstants = inject(AppConstantsService);
-  private localStorage = inject(LocalStorageService);
+  private appConstants = inject(AppConstants);
+  private localStorage = inject(LocalStorage);
 
   private selectedLanguageId: string;
 

@@ -20,7 +20,7 @@ import { NgbActiveModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
       <button type="button" class="btn btn-primary" (click)="close()">{{ buttonLabel() }}</button>
     </div>`,
 })
-export class ModalAlertComponent {
+export class ModalAlert {
   private activeModal = inject(NgbActiveModal);
 
   title = signal<string | undefined>(undefined);

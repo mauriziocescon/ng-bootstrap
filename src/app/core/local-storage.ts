@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { AppConstantsService } from './app-constants.service';
+import { AppConstants } from './app-constants';
 
 /**
  * Manage data in
@@ -10,9 +10,9 @@ import { AppConstantsService } from './app-constants.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LocalStorageService {
-  private appConstants = inject(AppConstantsService);
-  
+export class LocalStorage {
+  private appConstants = inject(AppConstants);
+
   private prefix: string;
 
   constructor() {
