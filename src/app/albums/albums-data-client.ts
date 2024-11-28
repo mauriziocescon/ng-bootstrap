@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { AppConstants } from '../core/app-constants';
@@ -13,7 +13,7 @@ export class AlbumsDataClient {
   private readonly http = inject(HttpClient);
   private readonly appConstants = inject(AppConstants);
 
-  getAlbums(textFilter: string | undefined, page: number): Observable<{ albums: Album[], lastPage: boolean }> {
+  getAlbums(textFilter: string | undefined, page: number) {
     const url = this.appConstants.Api.albums;
     const _start = (page - 1) * 20, _limit = 20;
     const params = { q: textFilter || '', _start, _limit };
@@ -30,7 +30,7 @@ export class AlbumsDataClient {
       );
   }
 
-  private handleError(err: HttpErrorResponse): Observable<never> {
+  private handleError(err: HttpErrorResponse) {
     if (err.status === 0) {
       // A client-side or network error occurred
       return throwError(() => err.error.message);

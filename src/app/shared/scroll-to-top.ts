@@ -32,7 +32,7 @@ export class ScrollToTop {
 
   readonly domReady = afterNextRender(() => this.renderer.setStyle(this.el.nativeElement, 'visibility', 'hidden'));
 
-  onWindowScroll(event: any): void {
+  onWindowScroll(event: any) {
     const scrollTopHeight = this.document.documentElement.scrollTop || 0;
     if (scrollTopHeight > 100) {
       this.renderer.setStyle(this.el.nativeElement, 'visibility', 'visible');
@@ -41,7 +41,7 @@ export class ScrollToTop {
     }
   }
 
-  scrollToTop(event: any): void {
+  scrollToTop(event: any) {
     this.document.documentElement.scrollTop = 0;
   }
 }

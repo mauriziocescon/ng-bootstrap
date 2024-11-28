@@ -29,15 +29,15 @@ export class ModalConfirmer {
   readonly yesButtonLabel = signal<string | undefined>(undefined);
   readonly noButtonLabel = signal<string | undefined>(undefined);
 
-  yes(): void {
+  yes() {
     this.activeModal.close(true);
   }
 
-  no(): void {
+  no() {
     this.activeModal.close(false);
   }
 
-  dismiss(): void {
+  dismiss() {
     this.activeModal.dismiss('Dismiss click');
   }
 }

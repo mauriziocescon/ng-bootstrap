@@ -86,15 +86,15 @@ export class AlbumsPage implements OnInit {
     });
   });
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.albumsStore.setup();
   }
 
-  protected textSearchDidChange(textSearch: string): void {
+  protected textSearchDidChange(textSearch: string) {
     this.albumsStore.updateParams({ textSearch, pageNumber: 1 });
   }
 
-  protected updateParams(): void {
+  protected updateParams() {
     if (!this.albumsStore.isLoadCompleted() && !this.albumsStore.isLoading()) {
       if (this.albumsStore.error()) {
         this.albumsStore.updateParams({ ...this.albumsStore.params() });
@@ -107,7 +107,7 @@ export class AlbumsPage implements OnInit {
     }
   }
 
-  protected retry(): void {
+  protected retry() {
     this.albumsStore.retry();
   }
 }

@@ -25,7 +25,7 @@ export class LocalStorage {
     }
   }
 
-  setData(key: string, data: any): void {
+  setData(key: string, data: any) {
     try {
       if (data === undefined) {
         localStorage.removeItem(`${this.prefix}_${key}`);
@@ -38,7 +38,7 @@ export class LocalStorage {
     }
   }
 
-  removeData(key: string): void {
+  removeData(key: string) {
     try {
       localStorage.removeItem(this.prefix + '_' + key.toString());
     } catch (e: any) {
@@ -46,7 +46,7 @@ export class LocalStorage {
     }
   }
 
-  removeAllData(): void {
+  removeAllData() {
     try {
       for (const key in localStorage) {
         if (key.startsWith(`${this.prefix}_`)) {

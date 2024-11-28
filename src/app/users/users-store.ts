@@ -21,49 +21,49 @@ type UserState = {
 export class UsersStore implements OnDestroy {
   private readonly usersDataClient = inject(UsersDataClient);
 
-  private readonly userState = signalState<UserState>({
+  private readonly state = signalState<UserState>({
     params: { textSearch: '' },
     users: [],
     loading: false,
     error: undefined,
   });
 
-  readonly users = computed(() => this.userState.users());
-  readonly loading = computed(() => this.userState.loading());
-  readonly error = computed(() => this.userState.error());
+  readonly users = computed(() => this.state.users());
+  readonly loading = computed(() => this.state.loading());
+  readonly error = computed(() => this.state.error());
   readonly isLoadCompleted = computed<boolean>(() => this.users()?.length > 0);
   readonly hasNoData = computed(() => this.users()?.length === 0 && !this.loading() && this.error() === undefined);
   readonly shouldRetry = computed(() => !this.loading() && this.error() !== undefined);
 
-  private readonly paramsSubscription = rxMethod<{ textSearch: string }>(
+  private readonly loadUsers = rxMethod<{ textSearch: string }>(
     pipe(
-      startWith({ ...this.userState.params() }),
-      tap(() => patchState(this.userState, () => ({ loading: true, error: undefined }))),
+      startWith({ ...this.state.params() }),
+      tap(() => patchState(this.state, () => ({ loading: true, error: undefined }))),
       switchMap(({ textSearch }) => this.usersDataClient.getUsers(textSearch)
         .pipe(
           tapResponse({
-            next: data => patchState(this.userState, state => ({ users: data.users })),
-            error: (err: string) => patchState(this.userState, state => ({ error: err })),
-            finalize: () => patchState(this.userState, state => ({ loading: false })),
+            next: data => patchState(this.state, state => ({ users: data.users })),
+            error: (err: string) => patchState(this.state, state => ({ error: err })),
+            finalize: () => patchState(this.state, state => ({ loading: false })),
           }),
         ),
       ),
     ),
   );
 
-  setup(): void {
-    this.paramsSubscription(this.userState.params);
+  setup() {
+    this.loadUsers(this.state.params);
   }
 
-  ngOnDestroy(): void {
-    this.paramsSubscription?.unsubscribe();
+  ngOnDestroy() {
+    this.loadUsers?.unsubscribe();
   }
 
-  updateParams(params: { textSearch: string }): void {
-    patchState(this.userState, () => ({ params: { ...params }, users: [] }));
+  updateParams(params: { textSearch: string }) {
+    patchState(this.state, () => ({ params: { ...params }, users: [] }));
   }
 
-  retry(): void {
-    patchState(this.userState, state => ({ params: { ...state.params }, users: [] }));
+  retry() {
+    patchState(this.state, state => ({ params: { ...state.params }, users: [] }));
   }
 }

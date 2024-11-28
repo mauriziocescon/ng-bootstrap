@@ -11,7 +11,7 @@ import { ModalConfirmer } from './modal-confirmer';
 export class ModalManager {
   private readonly ngbModal = inject(NgbModal);
 
-  modalAlert(title: string, message: string, buttonLabel: string): void {
+  modalAlert(title: string, message: string, buttonLabel: string) {
     const modalRef = this.ngbModal.open(ModalAlert);
     modalRef.componentInstance.title.set(title);
     modalRef.componentInstance.message.set(message);
@@ -22,7 +22,7 @@ export class ModalManager {
       .catch(reason => console.log(`Dismissed ${this.getDismissReason(reason)}`));
   }
 
-  modalConfirmer(title: string, message: string, yesButtonLabel: string, noButtonLabel: string, callback: (result: boolean) => void): void {
+  modalConfirmer(title: string, message: string, yesButtonLabel: string, noButtonLabel: string, callback: (result: boolean) => void) {
     const modalRef = this.ngbModal.open(ModalConfirmer);
     modalRef.componentInstance.title.set(title);
     modalRef.componentInstance.message.set(message);
@@ -37,7 +37,7 @@ export class ModalManager {
       .catch(reason => console.log(`Dismissed ${this.getDismissReason(reason)}`));
   }
 
-  private getDismissReason(reason: any): string {
+  private getDismissReason(reason: any) {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

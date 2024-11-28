@@ -39,19 +39,19 @@ export class AppConstants {
   private readonly languages = new Languages();
   private readonly localStorageKey = new LocalStorageKey();
 
-  get Api(): Api {
+  get Api() {
     return this.api;
   }
 
-  get Application(): Application {
+  get Application() {
     return this.application;
   }
 
-  get Languages(): Languages {
+  get Languages() {
     return this.languages;
   }
 
-  get LocalStorageKey(): LocalStorageKey {
+  get LocalStorageKey() {
     return this.localStorageKey;
   }
 }

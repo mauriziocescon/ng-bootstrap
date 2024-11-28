@@ -28,11 +28,11 @@ export class AppLanguage {
     this.transloco.setActiveLang(this.getLanguageId());
   }
 
-  getLanguageId(): string {
+  getLanguageId() {
     return this.selectedLanguageId;
   }
 
-  setLanguageId(languageId: string): void {
+  setLanguageId(languageId: string) {
     if (languageId !== undefined &&
       languageId !== this.selectedLanguageId &&
       this.appConstants.Languages.SUPPORTED_LANG.indexOf(languageId) !== -1) {
@@ -41,15 +41,15 @@ export class AppLanguage {
     }
   }
 
-  getSupportedLanguagesList(): string[] {
+  getSupportedLanguagesList() {
     return this.appConstants.Languages.SUPPORTED_LANG;
   }
 
-  private getDefaultLanguageId(): string {
+  private getDefaultLanguageId() {
     return this.appConstants.Languages.DEFAULT_LANGUAGE;
   }
 
-  private setup(): void {
+  private setup() {
     const localStorageLang = this.localStorage.getData<string>(this.appConstants.LocalStorageKey.LANGUAGE_ID);
     const browserLang = this.getBrowserLang();
     const defaultLang = this.getDefaultLanguageId();
@@ -64,7 +64,7 @@ export class AppLanguage {
     }
   }
 
-  private getBrowserLang(): string {
+  private getBrowserLang() {
     let lang: string = navigator.language;
 
     if (lang.length > 0) {
@@ -78,7 +78,7 @@ export class AppLanguage {
     return lang;
   }
 
-  private registerLocale(): void {
+  private registerLocale() {
     switch (this.selectedLanguageId) {
       case this.appConstants.Languages.DE: {
         registerLocaleData(localeDe);

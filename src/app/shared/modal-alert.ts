@@ -27,11 +27,11 @@ export class ModalAlert {
   readonly message = signal<string | undefined>(undefined);
   readonly buttonLabel = signal<string | undefined>(undefined);
 
-  close(): void {
+  close() {
     this.activeModal.close('Close click');
   }
 
-  dismiss(): void {
+  dismiss() {
     this.activeModal.dismiss('Dismiss click');
   }
 }

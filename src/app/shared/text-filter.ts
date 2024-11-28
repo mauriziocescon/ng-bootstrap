@@ -40,19 +40,19 @@ export class TextFilter implements OnInit, OnDestroy {
 
   readonly isTextFilterNotEmpty = toSignal(this.searchControl.valueChanges.pipe(map(v => v !== '')));
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscribeToSearchControlValueChanges();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.searchControlSubscription?.unsubscribe();
   }
 
-  resetTextFilter(): void {
+  resetTextFilter() {
     this.searchControl.setValue('');
   }
 
-  private subscribeToSearchControlValueChanges(): void {
+  private subscribeToSearchControlValueChanges() {
     this.searchControlSubscription?.unsubscribe();
 
     this.searchControlSubscription = this.searchControl

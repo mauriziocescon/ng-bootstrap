@@ -81,15 +81,15 @@ export class UsersPage implements OnInit {
     });
   });
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.usersStore.setup();
   }
 
-  protected textSearchDidChange(textSearch: string): void {
+  protected textSearchDidChange(textSearch: string) {
     this.usersStore.updateParams({ textSearch });
   }
 
-  protected retry(): void {
+  protected retry() {
     this.usersStore.retry();
   }
 }

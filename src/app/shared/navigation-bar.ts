@@ -63,33 +63,33 @@ export class NavigationBar implements OnInit {
   readonly isCollapsed = signal<boolean>(false);
   readonly canOpenJsonServer = signal<boolean>(false);
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.languages.set(this.appLanguage.getSupportedLanguagesList());
     this.selectedLanguageId.set(this.appLanguage.getLanguageId());
     this.isCollapsed.set(true);
     this.canOpenJsonServer.set(this.appConstants.Application.SHOW_JSON_SERVER_API === true);
   }
 
-  selectLanguage(language: string): void {
+  selectLanguage(language: string) {
     if (this.appLanguage.getLanguageId() !== language) {
       this.selectedLanguageId.set(language);
       this.appLanguage.setLanguageId(language);
     }
   }
 
-  toggleCollapsed(): void {
+  toggleCollapsed() {
     this.isCollapsed.update(v => !v);
   }
 
-  goToAlbums(): void {
+  goToAlbums() {
     this.router.navigateByUrl('/albums');
   }
 
-  goToUsers(): void {
+  goToUsers() {
     this.router.navigateByUrl('/users');
   }
 
-  openJsonServer(): void {
+  openJsonServer() {
     window.open(this.appConstants.Application.JSON_SERVER_API_URL);
   }
 }

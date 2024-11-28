@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { AppConstants } from '../core/app-constants';
@@ -13,7 +13,7 @@ export class UsersDataClient {
   private readonly http = inject(HttpClient);
   private readonly appConstants = inject(AppConstants);
 
-  getUsers(textFilter: string | undefined): Observable<{ users: User[] }> {
+  getUsers(textFilter: string | undefined) {
     const url = this.appConstants.Api.users;
     const params = { q: textFilter || '' };
 
@@ -24,7 +24,7 @@ export class UsersDataClient {
       );
   }
 
-  private handleError(err: HttpErrorResponse): Observable<never> {
+  private handleError(err: HttpErrorResponse) {
     if (err.status === 0) {
       // A client-side or network error occurred
       return throwError(() => err.error.message);
