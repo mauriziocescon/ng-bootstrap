@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, OnDestroy } from '@angular/core';
 
 import { pipe } from 'rxjs';
-import { debounceTime, startWith, switchMap, tap } from 'rxjs/operators';
+import { startWith, switchMap, tap } from 'rxjs/operators';
 import { patchState, signalState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
@@ -11,7 +11,7 @@ import { User } from './user';
 import { UsersDataClient } from './users-data-client';
 
 type UserState = {
-  params: { textSearch: string | undefined };
+  params: { textSearch: string };
   users: User[],
   loading: boolean;
   error: string | undefined,
@@ -19,27 +19,26 @@ type UserState = {
 
 @Injectable()
 export class UsersStore implements OnDestroy {
-  private usersDataClient = inject(UsersDataClient);
+  private readonly usersDataClient = inject(UsersDataClient);
 
-  private userState = signalState<UserState>({
+  private readonly userState = signalState<UserState>({
     params: { textSearch: '' },
     users: [],
     loading: false,
     error: undefined,
   });
 
-  users = computed(() => this.userState.users());
-  loading = computed(() => this.userState.loading());
-  error = computed(() => this.userState.error());
-  isLoadCompleted = computed<boolean>(() => this.users()?.length > 0);
-  hasNoData = computed(() => this.users()?.length === 0 && !this.loading() && this.error() === undefined);
-  shouldRetry = computed(() => !this.loading() && this.error() !== undefined);
+  readonly users = computed(() => this.userState.users());
+  readonly loading = computed(() => this.userState.loading());
+  readonly error = computed(() => this.userState.error());
+  readonly isLoadCompleted = computed<boolean>(() => this.users()?.length > 0);
+  readonly hasNoData = computed(() => this.users()?.length === 0 && !this.loading() && this.error() === undefined);
+  readonly shouldRetry = computed(() => !this.loading() && this.error() !== undefined);
 
-  private paramsSubscription = rxMethod<{ textSearch: string | undefined }>(
+  private readonly paramsSubscription = rxMethod<{ textSearch: string }>(
     pipe(
       startWith({ ...this.userState.params() }),
-      tap(() => patchState(this.userState, state => ({ loading: true, error: undefined }))),
-      debounceTime(50),
+      tap(() => patchState(this.userState, () => ({ loading: true, error: undefined }))),
       switchMap(({ textSearch }) => this.usersDataClient.getUsers(textSearch)
         .pipe(
           tapResponse({
@@ -61,7 +60,7 @@ export class UsersStore implements OnDestroy {
   }
 
   updateParams(params: { textSearch: string }): void {
-    patchState(this.userState, state => ({ params: { ...params }, users: [] }));
+    patchState(this.userState, () => ({ params: { ...params }, users: [] }));
   }
 
   retry(): void {

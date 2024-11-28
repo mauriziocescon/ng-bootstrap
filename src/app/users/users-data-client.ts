@@ -10,8 +10,8 @@ import { User } from './user';
 
 @Injectable()
 export class UsersDataClient {
-  private http = inject(HttpClient);
-  private appConstants = inject(AppConstants);
+  private readonly http = inject(HttpClient);
+  private readonly appConstants = inject(AppConstants);
 
   getUsers(textFilter: string | undefined): Observable<{ users: User[] }> {
     const url = this.appConstants.Api.users;

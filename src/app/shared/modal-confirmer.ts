@@ -24,10 +24,10 @@ import { NgbActiveModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 export class ModalConfirmer {
   private activeModal = inject(NgbActiveModal);
 
-  title = signal<string | undefined>(undefined);
-  message = signal<string | undefined>(undefined);
-  yesButtonLabel = signal<string | undefined>(undefined);
-  noButtonLabel = signal<string | undefined>(undefined);
+  readonly title = signal<string | undefined>(undefined);
+  readonly message = signal<string | undefined>(undefined);
+  readonly yesButtonLabel = signal<string | undefined>(undefined);
+  readonly noButtonLabel = signal<string | undefined>(undefined);
 
   yes(): void {
     this.activeModal.close(true);

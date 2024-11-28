@@ -21,11 +21,11 @@ import { NgbActiveModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     </div>`,
 })
 export class ModalAlert {
-  private activeModal = inject(NgbActiveModal);
+  private readonly activeModal = inject(NgbActiveModal);
 
-  title = signal<string | undefined>(undefined);
-  message = signal<string | undefined>(undefined);
-  buttonLabel = signal<string | undefined>(undefined);
+  readonly title = signal<string | undefined>(undefined);
+  readonly message = signal<string | undefined>(undefined);
+  readonly buttonLabel = signal<string | undefined>(undefined);
 
   close(): void {
     this.activeModal.close('Close click');

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { User } from '../user';
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-user-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
@@ -15,8 +15,8 @@ import { User } from '../user';
     </div>`,
 })
 export class UserCard {
-  user = input.required<User>();
-  title = computed(() => this.user().id);
-  subtitle = computed(() => this.user().username);
-  content = computed(() => `${this.user().email} - ${this.user().website}`);
+  readonly user = input.required<User>();
+  protected readonly title = computed(() => this.user().id);
+  protected readonly subtitle = computed(() => this.user().username);
+  protected readonly content = computed(() => `${this.user().email} - ${this.user().website}`);
 }

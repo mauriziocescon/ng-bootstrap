@@ -11,13 +11,9 @@ import { AppConstants } from './app-constants';
   providedIn: 'root',
 })
 export class LocalStorage {
-  private appConstants = inject(AppConstants);
+  private readonly appConstants = inject(AppConstants);
 
-  private prefix: string;
-
-  constructor() {
-    this.prefix = this.appConstants.Application.APP_NAME;
-  }
+  private readonly prefix = this.appConstants.Application.APP_NAME;
 
   getData<T>(key: string): T | undefined {
     try {

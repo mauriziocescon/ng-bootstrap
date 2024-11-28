@@ -12,7 +12,7 @@ import { UsersDataClient } from './users-data-client';
 import { UsersStore } from './users-store';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-users-page',
   imports: [
     TranslocoPipe,
     ScrollToTop,
@@ -36,7 +36,7 @@ import { UsersStore } from './users-store';
       <div class="row">
         @for (user of usersStore.users(); track user.id) {
           <div class="col-12 col-sm-6 user">
-            <app-user [user]="user"/>
+            <app-user-card [user]="user"/>
           </div>
         }
       </div>
@@ -64,11 +64,11 @@ import { UsersStore } from './users-store';
     }`,
 })
 export class UsersPage implements OnInit {
-  private transloco = inject(TranslocoService);
-  private modalManager = inject(ModalManager);
-  usersStore = inject(UsersStore);
+  private readonly transloco = inject(TranslocoService);
+  private readonly modalManager = inject(ModalManager);
+  protected readonly usersStore = inject(UsersStore);
 
-  private errorWatcher = effect(() => {
+  private readonly errorWatcher = effect(() => {
     this.usersStore.error();
     untracked(() => {
       if (this.usersStore.error()) {
@@ -85,11 +85,11 @@ export class UsersPage implements OnInit {
     this.usersStore.setup();
   }
 
-  textSearchDidChange(textSearch: string): void {
+  protected textSearchDidChange(textSearch: string): void {
     this.usersStore.updateParams({ textSearch });
   }
 
-  retry(): void {
+  protected retry(): void {
     this.usersStore.retry();
   }
 }

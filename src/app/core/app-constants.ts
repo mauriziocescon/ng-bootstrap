@@ -34,10 +34,10 @@ export class LocalStorageKey {
   providedIn: 'root',
 })
 export class AppConstants {
-  private api: Api = new Api();
-  private application = new Application();
-  private languages = new Languages();
-  private localStorageKey = new LocalStorageKey();
+  private readonly api: Api = new Api();
+  private readonly application = new Application();
+  private readonly languages = new Languages();
+  private readonly localStorageKey = new LocalStorageKey();
 
   get Api(): Api {
     return this.api;

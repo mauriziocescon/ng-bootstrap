@@ -16,10 +16,11 @@ import { TranslocoPipe } from '@jsverse/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="input-group">
-      <input type="text"
-             class="form-control"
-             placeholder="{{ 'TEXT_FILTER.PLACEHOLDER' | transloco }}"
-             [formControl]="searchControl">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="{{ 'TEXT_FILTER.PLACEHOLDER' | transloco }}"
+        [formControl]="searchControl">
       <span class="input-group-text addon" (click)="resetTextFilter()">
         <span class="bi bi-search" [hidden]="isTextFilterNotEmpty()"></span>
         <span class="bi bi-x" [hidden]="!isTextFilterNotEmpty()"></span>
@@ -32,12 +33,12 @@ import { TranslocoPipe } from '@jsverse/transloco';
   `,
 })
 export class TextFilter implements OnInit, OnDestroy {
-  valueDidChange = output<string>();
+  readonly valueDidChange = output<string>();
 
-  searchControl = new FormControl<string>('');
-  private searchControlSubscription: Subscription | undefined;
+  readonly searchControl = new FormControl<string>('');
+  private searchControlSubscription: Subscription | undefined = undefined;
 
-  isTextFilterNotEmpty = toSignal(this.searchControl.valueChanges.pipe(map(v => v !== '')));
+  readonly isTextFilterNotEmpty = toSignal(this.searchControl.valueChanges.pipe(map(v => v !== '')));
 
   ngOnInit(): void {
     this.subscribeToSearchControlValueChanges();

@@ -54,14 +54,14 @@ import { AppLanguage } from '../core/app-language';
     </nav>`,
 })
 export class NavigationBar implements OnInit {
-  private router = inject(Router);
-  private appConstants = inject(AppConstants);
-  private appLanguage = inject(AppLanguage);
+  private readonly router = inject(Router);
+  private readonly appConstants = inject(AppConstants);
+  private readonly appLanguage = inject(AppLanguage);
 
-  languages = signal<string[]>([]);
-  selectedLanguageId = signal<string | undefined>(undefined);
-  isCollapsed = signal<boolean>(false);
-  canOpenJsonServer = signal<boolean>(false);
+  readonly languages = signal<string[]>([]);
+  readonly selectedLanguageId = signal<string | undefined>(undefined);
+  readonly isCollapsed = signal<boolean>(false);
+  readonly canOpenJsonServer = signal<boolean>(false);
 
   ngOnInit(): void {
     this.languages.set(this.appLanguage.getSupportedLanguagesList());

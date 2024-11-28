@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { Album } from '../album';
 
 @Component({
-  selector: 'app-album',
+  selector: 'app-album-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
@@ -14,7 +14,7 @@ import { Album } from '../album';
     </div>`,
 })
 export class AlbumCard {
-  album = input.required<Album>();
-  title = computed(() => this.album().id);
-  subtitle = computed(() => this.album().title);
+  readonly album = input.required<Album>();
+  protected readonly title = computed(() => this.album().id);
+  protected readonly subtitle = computed(() => this.album().title);
 }

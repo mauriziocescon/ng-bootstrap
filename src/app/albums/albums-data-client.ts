@@ -10,8 +10,8 @@ import { Album } from './album';
 
 @Injectable()
 export class AlbumsDataClient {
-  private http = inject(HttpClient);
-  private appConstants = inject(AppConstants);
+  private readonly http = inject(HttpClient);
+  private readonly appConstants = inject(AppConstants);
 
   getAlbums(textFilter: string | undefined, page: number): Observable<{ albums: Album[], lastPage: boolean }> {
     const url = this.appConstants.Api.albums;

@@ -13,9 +13,9 @@ import { LocalStorage } from './local-storage';
   providedIn: 'root',
 })
 export class AppLanguage {
-  private transloco = inject(TranslocoService);
-  private appConstants = inject(AppConstants);
-  private localStorage = inject(LocalStorage);
+  private readonly transloco = inject(TranslocoService);
+  private readonly appConstants = inject(AppConstants);
+  private readonly localStorage = inject(LocalStorage);
 
   private selectedLanguageId: string;
 

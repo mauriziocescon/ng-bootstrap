@@ -9,7 +9,7 @@ import { ModalConfirmer } from './modal-confirmer';
   providedIn: 'root',
 })
 export class ModalManager {
-  private ngbModal = inject(NgbModal);
+  private readonly ngbModal = inject(NgbModal);
 
   modalAlert(title: string, message: string, buttonLabel: string): void {
     const modalRef = this.ngbModal.open(ModalAlert);

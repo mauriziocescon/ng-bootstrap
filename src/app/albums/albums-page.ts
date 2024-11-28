@@ -13,7 +13,7 @@ import { AlbumsDataClient } from './albums-data-client';
 import { AlbumsStore } from './albums-store';
 
 @Component({
-  selector: 'app-albums',
+  selector: 'app-albums-page',
   imports: [
     TranslocoPipe,
     InfiniteScrollDirective,
@@ -41,7 +41,7 @@ import { AlbumsStore } from './albums-store';
       <div class="row">
         @for (album of albumsStore.albums(); track album.id) {
           <div class="col-12 col-sm-6 album">
-            <app-album [album]="album"/>
+            <app-album-card [album]="album"/>
           </div>
         }
       </div>
@@ -69,11 +69,11 @@ import { AlbumsStore } from './albums-store';
     }`,
 })
 export class AlbumsPage implements OnInit {
-  private transloco = inject(TranslocoService);
-  private modalManager = inject(ModalManager);
-  albumsStore = inject(AlbumsStore);
+  private readonly transloco = inject(TranslocoService);
+  private readonly modalManager = inject(ModalManager);
+  protected readonly albumsStore = inject(AlbumsStore);
 
-  private errorWatcher = effect(() => {
+  private readonly errorWatcher = effect(() => {
     this.albumsStore.error();
     untracked(() => {
       if (this.albumsStore.error()) {
@@ -90,11 +90,11 @@ export class AlbumsPage implements OnInit {
     this.albumsStore.setup();
   }
 
-  textSearchDidChange(textSearch: string): void {
+  protected textSearchDidChange(textSearch: string): void {
     this.albumsStore.updateParams({ textSearch, pageNumber: 1 });
   }
 
-  updateParams(): void {
+  protected updateParams(): void {
     if (!this.albumsStore.isLoadCompleted() && !this.albumsStore.isLoading()) {
       if (this.albumsStore.error()) {
         this.albumsStore.updateParams({ ...this.albumsStore.params() });
@@ -107,7 +107,7 @@ export class AlbumsPage implements OnInit {
     }
   }
 
-  retry(): void {
+  protected retry(): void {
     this.albumsStore.retry();
   }
 }
