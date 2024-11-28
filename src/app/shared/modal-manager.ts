@@ -11,7 +11,7 @@ import { ModalConfirmer } from './modal-confirmer';
 export class ModalManager {
   private readonly ngbModal = inject(NgbModal);
 
-  modalAlert(title: string, message: string, buttonLabel: string) {
+  alert(title: string, message: string, buttonLabel: string) {
     const modalRef = this.ngbModal.open(ModalAlert);
     modalRef.componentInstance.title.set(title);
     modalRef.componentInstance.message.set(message);
@@ -22,7 +22,7 @@ export class ModalManager {
       .catch(reason => console.log(`Dismissed ${this.getDismissReason(reason)}`));
   }
 
-  modalConfirmer(title: string, message: string, yesButtonLabel: string, noButtonLabel: string, callback: (result: boolean) => void) {
+  confirmer(title: string, message: string, yesButtonLabel: string, noButtonLabel: string, callback: (result: boolean) => void) {
     const modalRef = this.ngbModal.open(ModalConfirmer);
     modalRef.componentInstance.title.set(title);
     modalRef.componentInstance.message.set(message);

@@ -72,7 +72,7 @@ export class UsersPage implements OnInit {
     this.usersStore.error();
     untracked(() => {
       if (this.usersStore.error()) {
-        this.modalManager.modalAlert(
+        this.modalManager.alert(
           this.transloco.translate('USERS.ERROR_ACCESS_DATA'),
           this.usersStore.error() as string,
           this.transloco.translate('USERS.CLOSE'),

@@ -77,7 +77,7 @@ export class AlbumsPage implements OnInit {
     this.albumsStore.error();
     untracked(() => {
       if (this.albumsStore.error()) {
-        this.modalManager.modalAlert(
+        this.modalManager.alert(
           this.transloco.translate('ALBUMS.ERROR_ACCESS_DATA'),
           this.albumsStore.error() as string,
           this.transloco.translate('ALBUMS.CLOSE'),
