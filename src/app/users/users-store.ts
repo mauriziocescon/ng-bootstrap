@@ -40,13 +40,13 @@ export class UsersStore implements OnDestroy {
   private readonly loadUsers = rxMethod<{ textSearch: string }>(
     pipe(
       filter(({ textSearch }) => textSearch !== undefined),
-      tap(() => patchState(this.state, () => ({ loading: true, error: undefined }))),
+      tap(() => patchState(this.state, { loading: true, error: undefined })),
       switchMap(({ textSearch }) => this.usersDataClient.getUsers(textSearch)
         .pipe(
           tapResponse({
-            next: data => patchState(this.state, state => ({ users: data.users })),
-            error: (err: string) => patchState(this.state, state => ({ error: err })),
-            finalize: () => patchState(this.state, state => ({ loading: false })),
+            next: data => patchState(this.state, { users: data.users }),
+            error: (err: string) => patchState(this.state, { error: err }),
+            finalize: () => patchState(this.state, { loading: false }),
           }),
         ),
       ),
@@ -62,7 +62,7 @@ export class UsersStore implements OnDestroy {
   }
 
   updateParams(params: { textSearch: string }) {
-    patchState(this.state, () => ({ params: { ...params }, users: [] }));
+    patchState(this.state, { params: { ...params }, users: [] });
   }
 
   retry() {

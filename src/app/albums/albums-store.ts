@@ -59,8 +59,8 @@ export class AlbumsStore implements OnDestroy {
                 loadCompleted: data.lastPage,
               }));
             },
-            error: (err: string) => patchState(this.state, () => ({ error: err })),
-            finalize: () => patchState(this.state, () => ({ loading: false })),
+            error: (err: string) => patchState(this.state, { error: err }),
+            finalize: () => patchState(this.state, { loading: false }),
           }),
         ),
       ),
@@ -76,7 +76,7 @@ export class AlbumsStore implements OnDestroy {
   }
 
   updateParams(params: { textSearch: string, pageNumber: number }) {
-    patchState(this.state, () => ({ params: { ...params } }));
+    patchState(this.state, { params: { ...params } });
   }
 
   retry() {
