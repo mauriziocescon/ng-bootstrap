@@ -17,7 +17,9 @@ type UserState = {
   error: string | undefined,
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UsersStore implements OnDestroy {
   private readonly usersDataClient = inject(UsersDataClient);
 
@@ -51,7 +53,7 @@ export class UsersStore implements OnDestroy {
     ),
   );
 
-  setup() {
+  constructor() {
     this.loadUsers(this.state.params);
   }
 

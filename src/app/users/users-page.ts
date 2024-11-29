@@ -8,7 +8,6 @@ import { ModalManager } from '../shared/modal-manager';
 
 import { UserCard } from './user/user-card';
 
-import { UsersDataClient } from './users-data-client';
 import { UsersStore } from './users-store';
 
 @Component({
@@ -20,10 +19,6 @@ import { UsersStore } from './users-store';
     UserCard,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    UsersDataClient,
-    UsersStore,
-  ],
   template: `
     <div class="container-fluid users-page">
 
@@ -74,7 +69,7 @@ export class UsersPage implements OnInit {
   });
 
   ngOnInit() {
-    this.usersStore.setup();
+    this.textSearchDidChange('');
   }
 
   protected textSearchDidChange(textSearch: string) {

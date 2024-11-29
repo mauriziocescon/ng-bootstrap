@@ -9,7 +9,6 @@ import { ModalManager } from '../shared/modal-manager';
 
 import { AlbumCard } from './album/album-card';
 
-import { AlbumsDataClient } from './albums-data-client';
 import { AlbumsStore } from './albums-store';
 
 @Component({
@@ -22,10 +21,6 @@ import { AlbumsStore } from './albums-store';
     AlbumCard,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    AlbumsDataClient,
-    AlbumsStore,
-  ],
   template: `
     <div class="container-fluid albums-page"
          infiniteScroll
@@ -79,7 +74,7 @@ export class AlbumsPage implements OnInit {
   });
 
   ngOnInit() {
-    this.albumsStore.setup();
+    this.textSearchDidChange('');
   }
 
   protected textSearchDidChange(textSearch: string) {

@@ -18,7 +18,9 @@ type AlbumState = {
   loadCompleted: boolean,
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AlbumsStore implements OnDestroy {
   private readonly albumsDataClient = inject(AlbumsDataClient);
 
@@ -65,7 +67,7 @@ export class AlbumsStore implements OnDestroy {
     ),
   );
 
-  setup() {
+  constructor() {
     this.loadAlbums(this.state.params);
   }
 
