@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, OnDestroy } from '@angular/core';
 
 import { pipe } from 'rxjs';
-import { startWith, switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { patchState, signalState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
@@ -42,7 +42,7 @@ export class AlbumsStore implements OnDestroy {
 
   private readonly loadAlbums = rxMethod<{ textSearch: string, pageNumber: number }>(
     pipe(
-      startWith({ ...this.state.params() }),
+      filter(({ textSearch }) => textSearch !== undefined),
       tap(() => patchState(this.state, state => ({
         albums: state.params.pageNumber === 1 ? [] : state.albums,
         loading: true,

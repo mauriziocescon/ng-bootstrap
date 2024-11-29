@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/c
 import { FormsModule } from '@angular/forms';
 import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
 
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
 import isEmpty from 'lodash/isEmpty';
 
@@ -37,7 +37,7 @@ export class TextFilter {
   protected readonly value = signal('');
   protected readonly isNotEmpty = computed(() => !isEmpty(this.value()));
 
-  protected readonly value$ = toObservable(this.value).pipe(debounceTime(500), distinctUntilChanged());
+  protected readonly value$ = toObservable(this.value).pipe(debounceTime(500), distinctUntilChanged(), skip(1));
   readonly valueDidChange = outputFromObservable(this.value$);
 
   resetTextFilter() {
