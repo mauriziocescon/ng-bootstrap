@@ -75,15 +75,7 @@ export class AlbumsPage implements OnInit {
 
   private readonly errorWatcher = effect(() => {
     this.albumsStore.error();
-    untracked(() => {
-      if (this.albumsStore.error()) {
-        this.modalManager.alert(
-          this.transloco.translate('ALBUMS.ERROR_ACCESS_DATA'),
-          this.albumsStore.error() as string,
-          this.transloco.translate('ALBUMS.CLOSE'),
-        );
-      }
-    });
+    untracked(() => this.showModalError());
   });
 
   ngOnInit() {
@@ -109,5 +101,15 @@ export class AlbumsPage implements OnInit {
 
   protected retry() {
     this.albumsStore.retry();
+  }
+
+  private showModalError() {
+    if (this.albumsStore.error()) {
+      this.modalManager.alert(
+        this.transloco.translate('ALBUMS.ERROR_ACCESS_DATA'),
+        this.albumsStore.error() as string,
+        this.transloco.translate('ALBUMS.CLOSE'),
+      );
+    }
   }
 }

@@ -1,16 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, output } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
 
-import { distinctUntilChanged, Subscription } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
+import isEmpty from 'lodash/isEmpty';
 
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-text-filter',
   imports: [
-    ReactiveFormsModule,
+    FormsModule,
     TranslocoPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,10 +21,10 @@ import { TranslocoPipe } from '@jsverse/transloco';
         type="text"
         class="form-control"
         placeholder="{{ 'TEXT_FILTER.PLACEHOLDER' | transloco }}"
-        [formControl]="searchControl">
+        [(ngModel)]="value">
       <span class="input-group-text addon" (click)="resetTextFilter()">
-        <span class="bi bi-search" [hidden]="isTextFilterNotEmpty()"></span>
-        <span class="bi bi-x" [hidden]="!isTextFilterNotEmpty()"></span>
+        <span class="bi bi-search" [hidden]="isNotEmpty()"></span>
+        <span class="bi bi-x" [hidden]="!isNotEmpty()"></span>
       </span>
     </div>`,
   styles: `
@@ -32,32 +33,14 @@ import { TranslocoPipe } from '@jsverse/transloco';
     }
   `,
 })
-export class TextFilter implements OnInit, OnDestroy {
-  readonly valueDidChange = output<string>();
+export class TextFilter {
+  protected readonly value = signal('');
+  protected readonly isNotEmpty = computed(() => !isEmpty(this.value()));
 
-  readonly searchControl = new FormControl<string>('');
-  private searchControlSubscription: Subscription | undefined = undefined;
-
-  readonly isTextFilterNotEmpty = toSignal(this.searchControl.valueChanges.pipe(map(v => v !== '')));
-
-  ngOnInit() {
-    this.subscribeToSearchControlValueChanges();
-  }
-
-  ngOnDestroy() {
-    this.searchControlSubscription?.unsubscribe();
-  }
+  protected readonly value$ = toObservable(this.value).pipe(debounceTime(500), distinctUntilChanged());
+  readonly valueDidChange = outputFromObservable(this.value$);
 
   resetTextFilter() {
-    this.searchControl.setValue('');
-  }
-
-  private subscribeToSearchControlValueChanges() {
-    this.searchControlSubscription?.unsubscribe();
-
-    this.searchControlSubscription = this.searchControl
-      .valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe(value => this.valueDidChange.emit(value ?? ''));
+    this.value.set('');
   }
 }

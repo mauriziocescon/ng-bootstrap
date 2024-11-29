@@ -70,15 +70,7 @@ export class UsersPage implements OnInit {
 
   private readonly errorWatcher = effect(() => {
     this.usersStore.error();
-    untracked(() => {
-      if (this.usersStore.error()) {
-        this.modalManager.alert(
-          this.transloco.translate('USERS.ERROR_ACCESS_DATA'),
-          this.usersStore.error() as string,
-          this.transloco.translate('USERS.CLOSE'),
-        );
-      }
-    });
+    untracked(() => this.showModalError());
   });
 
   ngOnInit() {
@@ -91,5 +83,15 @@ export class UsersPage implements OnInit {
 
   protected retry() {
     this.usersStore.retry();
+  }
+
+  private showModalError() {
+    if (this.usersStore.error()) {
+      this.modalManager.alert(
+        this.transloco.translate('USERS.ERROR_ACCESS_DATA'),
+        this.usersStore.error() as string,
+        this.transloco.translate('USERS.CLOSE'),
+      );
+    }
   }
 }
