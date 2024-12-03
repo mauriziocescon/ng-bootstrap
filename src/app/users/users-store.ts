@@ -62,10 +62,10 @@ export class UsersStore implements OnDestroy {
   }
 
   updateParams(params: { textSearch: string }) {
-    patchState(this.state, { params: { ...params }, users: [] });
+    patchState(this.state, { params: { ...params } });
   }
 
   retry() {
-    patchState(this.state, state => ({ params: { ...state.params }, users: [] }));
+    patchState(this.state, state => ({ params: { ...state.params } }));
   }
 }
