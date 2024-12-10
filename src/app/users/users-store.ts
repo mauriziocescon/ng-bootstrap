@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, OnDestroy } from '@angular/core';
+import { computed, DestroyRef, inject, Injectable } from '@angular/core';
 
 import { pipe } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
@@ -20,7 +20,8 @@ type UserState = {
 @Injectable({
   providedIn: 'root',
 })
-export class UsersStore implements OnDestroy {
+export class UsersStore {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly usersDataClient = inject(UsersDataClient);
 
   private readonly state = signalState<UserState>({
@@ -53,12 +54,10 @@ export class UsersStore implements OnDestroy {
     ),
   );
 
+  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadUsers?.unsubscribe());
+
   constructor() {
     this.loadUsers(this.state.params);
-  }
-
-  ngOnDestroy() {
-    this.loadUsers?.unsubscribe();
   }
 
   updateParams(params: { textSearch: string }) {

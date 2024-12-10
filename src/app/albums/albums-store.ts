@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, OnDestroy } from '@angular/core';
+import { computed, DestroyRef, inject, Injectable } from '@angular/core';
 
 import { pipe } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
@@ -21,7 +21,8 @@ type AlbumState = {
 @Injectable({
   providedIn: 'root',
 })
-export class AlbumsStore implements OnDestroy {
+export class AlbumsStore {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly albumsDataClient = inject(AlbumsDataClient);
 
   private readonly state = signalState<AlbumState>({
@@ -67,12 +68,10 @@ export class AlbumsStore implements OnDestroy {
     ),
   );
 
+  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadAlbums?.unsubscribe());
+
   constructor() {
     this.loadAlbums(this.state.params);
-  }
-
-  ngOnDestroy() {
-    this.loadAlbums?.unsubscribe();
   }
 
   updateParams(params: { textSearch: string, pageNumber: number }) {
