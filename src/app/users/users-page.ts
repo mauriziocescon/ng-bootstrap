@@ -24,14 +24,14 @@ import { UsersStore } from './users-store';
 
       <div class="row">
         <div class="col-12">
-          <app-text-filter (valueDidChange)="textSearchDidChange($event)"/>
+          <app-text-filter (valueDidChange)="textSearchDidChange($event)" />
         </div>
       </div>
 
       <div class="row">
         @for (user of usersStore.users(); track user.id) {
           <div class="col-12 col-sm-6 user">
-            <app-user-card [user]="user"/>
+            <app-user-card [user]="user" />
           </div>
         }
       </div>
@@ -45,7 +45,7 @@ import { UsersStore } from './users-store';
       } @else if (usersStore.shouldRetry()) {
         <div class="full-width-message" (click)="retry()"> {{ "USERS.RETRY" | transloco }}</div>
       }
-      <app-scroll-to-top/>
+      <app-scroll-to-top />
 
     </div>`,
   styles: `

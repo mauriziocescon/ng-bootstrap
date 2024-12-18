@@ -29,14 +29,14 @@ import { AlbumsStore } from './albums-store';
 
       <div class="row">
         <div class="col-12">
-          <app-text-filter (valueDidChange)="textSearchDidChange($event)"/>
+          <app-text-filter (valueDidChange)="textSearchDidChange($event)" />
         </div>
       </div>
 
       <div class="row">
         @for (album of albumsStore.albums(); track album.id) {
           <div class="col-12 col-sm-6 album">
-            <app-album-card [album]="album"/>
+            <app-album-card [album]="album" />
           </div>
         }
       </div>
@@ -50,7 +50,7 @@ import { AlbumsStore } from './albums-store';
       } @else if (albumsStore.shouldRetry()) {
         <div class="full-width-message" (click)="retry()"> {{ "ALBUMS.RETRY" | transloco }}</div>
       }
-      <app-scroll-to-top/>
+      <app-scroll-to-top />
 
     </div>`,
   styles: `
