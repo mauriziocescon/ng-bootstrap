@@ -17,7 +17,8 @@ export class AlbumsDataClient {
 
   getAlbums(textFilter: string | undefined, page: number) {
     const url = this.appConstants.Api.albums;
-    const _start = (page - 1) * 20, _limit = 20;
+    const _start = (page - 1) * 20;
+    const _limit = 20;
     const params = { q: textFilter || '', _start, _limit };
 
     return this.http.get<Album[]>(url, { params, observe: 'response' })
