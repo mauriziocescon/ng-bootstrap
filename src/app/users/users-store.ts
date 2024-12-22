@@ -54,7 +54,7 @@ export class UsersStore {
     ),
   );
 
-  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadUsers?.unsubscribe());
+  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadUsers?.destroy());
 
   constructor() {
     this.loadUsers(this.state.params);

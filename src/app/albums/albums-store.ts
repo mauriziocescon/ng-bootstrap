@@ -68,7 +68,7 @@ export class AlbumsStore {
     ),
   );
 
-  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadAlbums?.unsubscribe());
+  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadAlbums?.destroy());
 
   constructor() {
     this.loadAlbums(this.state.params);
