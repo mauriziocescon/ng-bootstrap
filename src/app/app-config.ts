@@ -2,7 +2,6 @@ import { ApplicationConfig, inject, isDevMode, LOCALE_ID, provideZoneChangeDetec
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideServiceWorker } from '@angular/service-worker';
 
 import { provideTransloco } from '@jsverse/transloco';
 
@@ -17,10 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
     provideTransloco({
       config: {
         prodMode: !isDevMode(),
