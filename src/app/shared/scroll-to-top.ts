@@ -42,10 +42,12 @@ export class ScrollToTop implements OnDestroy {
   private sub: Subscription | undefined = undefined;
 
   private readonly domReady = afterNextRender(() => {
+    this.manageVisibility();
+
     this.sub = this.zone.runOutsideAngular(() =>
       fromEvent(window, 'scroll')
         .pipe(debounceTime(250))
-        .subscribe(() => this.zone.run(() => this.scroll())),
+        .subscribe(() => this.zone.run(() => this.manageVisibility())),
     );
   });
 
@@ -57,7 +59,7 @@ export class ScrollToTop implements OnDestroy {
     this.document.documentElement.scrollTop = 0;
   }
 
-  private scroll() {
+  private manageVisibility() {
     const scrollTopHeight = this.document.documentElement.scrollTop || 0;
     if (scrollTopHeight > 100) {
       this.renderer.setStyle(this.el.nativeElement, 'visibility', 'visible');
