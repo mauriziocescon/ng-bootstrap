@@ -10,7 +10,6 @@ export class UsersStore {
   private readonly usersDataClient = inject(UsersDataClient);
 
   private readonly params = signal({ textSearch: '' });
-
   private readonly usersResource = rxResource({
     request: this.params,
     loader: ({ request }) => this.usersDataClient.getUsers(request.textSearch),
