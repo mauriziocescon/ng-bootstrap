@@ -21,7 +21,7 @@ export class UsersDataClient {
 
     return this.http.get<User[]>(url, { params })
       .pipe(
-        map(data => ({ users: data })),
+        map(data => data),
         catchError((err: HttpErrorResponse) => this.handleError(err)),
       );
   }

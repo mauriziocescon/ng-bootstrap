@@ -1,70 +1,34 @@
-import { computed, DestroyRef, inject, Injectable } from '@angular/core';
-
-import { pipe } from 'rxjs';
-import { filter, switchMap, tap } from 'rxjs/operators';
-import { patchState, signalState } from '@ngrx/signals';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { tapResponse } from '@ngrx/operators';
-
-import { User } from './user';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 import { UsersDataClient } from './users-data-client';
-
-type UserState = {
-  params: { textSearch: string };
-  users: User[],
-  loading: boolean;
-  error: string | undefined,
-};
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersStore {
-  private readonly destroyRef = inject(DestroyRef);
   private readonly usersDataClient = inject(UsersDataClient);
 
-  private readonly state = signalState<UserState>({
-    params: { textSearch: '' },
-    users: [],
-    loading: false,
-    error: undefined,
+  private readonly params = signal({ textSearch: '' });
+
+  private readonly usersResource = rxResource({
+    request: this.params,
+    loader: ({ request }) => this.usersDataClient.getUsers(request.textSearch),
+    defaultValue: [],
   });
 
-  readonly users = computed(() => this.state.users());
-  readonly loading = computed(() => this.state.loading());
-  readonly error = computed(() => this.state.error());
-  readonly isLoadCompleted = computed<boolean>(() => this.users()?.length > 0);
+  readonly users = computed(() => this.usersResource.value());
+  readonly loading = computed(() => this.usersResource.isLoading());
+  readonly error = computed(() => this.usersResource.error());
+  readonly isLoadCompleted = computed(() => this.users()?.length > 0);
   readonly hasNoData = computed(() => this.users()?.length === 0 && !this.loading() && this.error() === undefined);
   readonly shouldRetry = computed(() => !this.loading() && this.error() !== undefined);
 
-  private readonly loadUsers = rxMethod<{ textSearch: string }>(
-    pipe(
-      filter(({ textSearch }) => textSearch !== undefined),
-      tap(() => patchState(this.state, { loading: true, error: undefined })),
-      switchMap(({ textSearch }) => this.usersDataClient.getUsers(textSearch)
-        .pipe(
-          tapResponse({
-            next: data => patchState(this.state, { users: data.users }),
-            error: (err: string) => patchState(this.state, { error: err }),
-            finalize: () => patchState(this.state, { loading: false }),
-          }),
-        ),
-      ),
-    ),
-  );
-
-  private readonly unregisterDestroy = this.destroyRef.onDestroy(() => this.loadUsers?.destroy());
-
-  constructor() {
-    this.loadUsers(this.state.params);
-  }
-
   updateParams(params: { textSearch: string }) {
-    patchState(this.state, { params: { ...params } });
+    this.params.set(params);
   }
 
   retry() {
-    patchState(this.state, state => ({ params: { ...state.params } }));
+    this.usersResource.reload();
   }
 }
