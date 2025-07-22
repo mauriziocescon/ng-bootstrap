@@ -16,7 +16,7 @@ export class UsersStore {
     defaultValue: [],
   });
 
-  readonly users = computed(() => this.usersResource.value());
+  readonly users = computed(() => this.usersResource.hasValue() ? this.usersResource.value() : []);
   readonly loading = computed(() => this.usersResource.isLoading());
   readonly error = computed(() => this.usersResource.error());
   readonly isLoadCompleted = computed(() => this.users()?.length > 0);
