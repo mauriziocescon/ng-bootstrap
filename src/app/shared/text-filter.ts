@@ -36,9 +36,7 @@ export class TextFilter implements OnDestroy {
   protected readonly value = signal('');
   protected readonly isNotEmpty = computed(() => !isEmpty(this.value()));
   protected timeoutRef: number | undefined = undefined;
-
-  protected some = signal('ciao');
-
+  
   ngOnDestroy() {
     clearTimeout(this.timeoutRef);
   }
