@@ -84,7 +84,7 @@ export class UsersPage implements OnInit {
     if (this.usersStore.error()) {
       this.modalManager.alert(
         this.transloco.translate('USERS.ERROR_ACCESS_DATA'),
-        this.usersStore.error() as string,
+        this.usersStore.error()?.message as string,
         this.transloco.translate('USERS.CLOSE'),
       );
     }

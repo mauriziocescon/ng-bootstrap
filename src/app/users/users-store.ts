@@ -11,8 +11,8 @@ export class UsersStore {
 
   private readonly params = signal({ textSearch: '' });
   private readonly usersResource = rxResource({
-    request: this.params,
-    loader: ({ request }) => this.usersDataClient.getUsers(request.textSearch),
+    params: this.params,
+    stream: ({ params }) => this.usersDataClient.getUsers(params.textSearch),
     defaultValue: [],
   });
 
