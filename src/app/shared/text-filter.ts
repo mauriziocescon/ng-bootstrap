@@ -1,8 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnDestroy, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
-
-import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
 import isEmpty from 'lodash/isEmpty';
 
@@ -21,7 +18,8 @@ import { TranslocoPipe } from '@jsverse/transloco';
         type="text"
         class="form-control"
         placeholder="{{ 'TEXT_FILTER.PLACEHOLDER' | transloco }}"
-        [(ngModel)]="value">
+        [(ngModel)]="value"
+        (ngModelChange)="valueChange()">
       <span class="input-group-text addon" (click)="resetTextFilter()">
         <span class="bi bi-search" [hidden]="isNotEmpty()"></span>
         <span class="bi bi-x" [hidden]="!isNotEmpty()"></span>
@@ -30,17 +28,31 @@ import { TranslocoPipe } from '@jsverse/transloco';
   styles: `
     .addon {
       color: var(--primary-color);
-    }
-  `,
+    }`,
 })
-export class TextFilter {
+export class TextFilter implements OnDestroy {
+  readonly valueDidChange = output<string>();
+
   protected readonly value = signal('');
   protected readonly isNotEmpty = computed(() => !isEmpty(this.value()));
+  protected timeoutRef: number | undefined = undefined;
 
-  protected readonly value$ = toObservable(this.value).pipe(debounceTime(500), distinctUntilChanged(), skip(1));
-  readonly valueDidChange = outputFromObservable(this.value$);
+  protected some = signal('ciao');
+
+  ngOnDestroy() {
+    clearTimeout(this.timeoutRef);
+  }
+
+  valueChange() {
+    clearTimeout(this.timeoutRef);
+
+    this.timeoutRef = setTimeout(() => {
+      this.valueDidChange.emit(this.value());
+    }, 500);
+  }
 
   resetTextFilter() {
     this.value.set('');
+    this.valueDidChange.emit(this.value());
   }
 }
