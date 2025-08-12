@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { provideTransloco } from '@jsverse/transloco';
 
@@ -23,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true, runCoalescing: true }),
     provideHttpClient(withFetch()),
     provideRouter(routes),
-    provideAnimationsAsync(),
     provideTransloco({
       config: {
         prodMode: !isDevMode(),
