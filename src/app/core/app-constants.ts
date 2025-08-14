@@ -8,7 +8,7 @@ export class Api {
 }
 
 export class Application {
-  APP_NAME = 'angular-app';
+  APP_NAME = 'ng-bootstrap';
   SHOW_JSON_SERVER_API = !environment.production;
   JSON_SERVER_API_URL = environment.apiUrl;
 }
