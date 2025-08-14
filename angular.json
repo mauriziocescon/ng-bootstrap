@@ -23,7 +23,6 @@
             "outputPath": "dist/ng-bootstrap",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -85,7 +84,6 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
