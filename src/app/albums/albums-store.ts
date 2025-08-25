@@ -56,12 +56,12 @@ export class AlbumsStore {
           tapResponse({
             next: data => {
               patchState(this.state, state => ({
+                loading: false,
                 albums: [...state.albums, ...data.albums],
                 loadCompleted: data.lastPage,
               }));
             },
-            error: (err: string) => patchState(this.state, { error: err }),
-            finalize: () => patchState(this.state, { loading: false }),
+            error: (err: string) => patchState(this.state, { loading: false, error: err }),
           }),
         ),
       ),
