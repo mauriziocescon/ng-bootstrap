@@ -6,7 +6,7 @@ import { NavigationBar } from './shared/navigation-bar';
 
 import { App } from './app';
 
-describe('AppComponent', () => {
+describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
