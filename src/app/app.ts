@@ -11,9 +11,9 @@ import { NavigationBar } from './shared/navigation-bar';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-navigation-bar/>
+    <app-navigation-bar />
     <div class="main-view">
-      <router-outlet/>
+      <router-outlet />
     </div>`,
   styles: `
     .main-view {
